@@ -151,7 +151,7 @@ def print_non_comedy_titles(movies):
 
 
 def find_first_movie(movies, target_rating=9.0):
-    """Находит первый фильм в списке, у которого рейтинг выше 9.0."""
+    """Находит первый фильм в списке, у которого рейтинг выше параметра."""
     found = None
     i = 0
     while i < len(movies):
@@ -166,7 +166,7 @@ def find_first_movie(movies, target_rating=9.0):
 
 
 def count_long_movies(movies, threshold=120):
-    """Возвращает количество фильмов из списка длиннее 2 часов."""
+    """Возвращает количество фильмов из списка длиннее параметра."""
     count = 0
     for movie in movies:
         if movie["duration_min"] > threshold:
@@ -190,7 +190,7 @@ def make_slug(title):
     return normalize_title(title).lower().replace(" ", "-")
 
 
-def format_report_line(movie): 
+def format_report_line(movie):
     """Возвращает строку отчёта с описанием одного фильма."""
     title = normalize_title(movie["title"])
     duration = duration_in_hours(movie["duration_min"])
@@ -201,7 +201,21 @@ def format_report_line(movie):
     )
 
 
+# ----- Этап 5. Списки
+
+
+def titles_sorted_by_rating(movies):
+    """Возвращает список названий фильмов, отстортированных по убыванию рейтинга"""
+    ordered = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    return [movie["title"] for movie in ordered]
+
+
+def top_n_by_rating(movies, n=3):
+    """Возвращает список из n кортежей (title, rating)"""
+    ordered = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
+    return [(movie["title"], movie["rating"]) for movie in ordered[:n]]
+
+
 # ----- Вывод для проверки
 if __name__ == "__main__":
-    print(format_report_line(movies[7]))
-    print(make_slug("silent hours"))
+    print(top_n_by_rating(movies, 3))
