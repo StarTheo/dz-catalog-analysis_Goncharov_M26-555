@@ -249,8 +249,29 @@ def above_average_ratings(movies):
     }
 
 
+# ----- Этап 7. Множетсва
+
+
+def all_genres(movies):
+    """Возвращает множество уникальных жанров"""
+    genres = set()
+    for movie in movies:
+        genres = genres | movie["genres"]
+    return genres
+
+
+def common_actors(movie1, movie2):
+    """Возвращает множество актеров, снимавшихся в обоих фильмах"""
+    return set(movie1["actors"]) & set(movie2["actors"])
+
+
+def genres_only_in_one(movies_a, movies_b):
+    """Возвращает жанры, встречающиеся в а, но не в б"""
+    return all_genres(movies_a) - all_genres(movies_b)
+
+
 # ----- Вывод для проверки
 if __name__ == "__main__":
-    print(count_by_genre(movies))
-    print(actor_filmography(movies))
-    print(above_average_ratings(movies))
+    print(sorted(all_genres(movies)))
+    print(common_actors(movies[0], movies[3]))
+    print(genres_only_in_one(movies[5:6], movies[:5]))
