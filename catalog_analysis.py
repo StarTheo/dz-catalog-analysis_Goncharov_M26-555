@@ -205,7 +205,7 @@ def format_report_line(movie):
 
 
 def titles_sorted_by_rating(movies):
-    """Возвращает список названий фильмов, отстортированных по убыванию рейтинга"""
+    """Возвращает список названий фильмов, отсортированных по убыванию рейтинга"""
     ordered = sorted(movies, key=lambda movie: movie["rating"], reverse=True)
     return [movie["title"] for movie in ordered]
 
@@ -216,6 +216,41 @@ def top_n_by_rating(movies, n=3):
     return [(movie["title"], movie["rating"]) for movie in ordered[:n]]
 
 
+# ----- Этап 6. Словари
+
+
+def count_by_genre(movies):
+    """Возвращает словарь жанр: кол-во фильмов в жанре"""
+    counts = {}
+    for movie in movies:
+        for genre in movie["genres"]:
+            counts[genre] = counts.get(genre, 0) + 1
+    return counts
+
+
+def actor_filmography(movies):
+    """Возвращает словарь названий фильмов по актёру"""
+    filmography = {}
+    for movie in movies:
+        for actor in movie["actors"]:
+            titles = filmography.get(actor, [])
+            titles.append(movie["title"])
+            filmography[actor] = titles
+    return filmography
+
+
+def above_average_ratings(movies):
+    """Словарь из фильмов с рейтингом выше среднего"""
+    avg_rating = average_rating(movies)
+    return {
+        movie["title"]: movie["rating"]
+        for movie in movies
+        if movie["rating"] > avg_rating
+    }
+
+
 # ----- Вывод для проверки
 if __name__ == "__main__":
-    print(top_n_by_rating(movies, 3))
+    print(count_by_genre(movies))
+    print(actor_filmography(movies))
+    print(above_average_ratings(movies))
