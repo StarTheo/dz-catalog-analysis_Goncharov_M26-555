@@ -143,7 +143,7 @@ def decade_label(year):
 
 
 def print_non_comedy_titles(movies):
-    """Возвращает наименования фильмов, которые не относятся к жанру комедии"""
+    """Печатает наименования фильмов, которые не относятся к жанру комедии."""
     for movie in movies:
         if "comedy" in movie["genres"]:
             continue
@@ -151,7 +151,7 @@ def print_non_comedy_titles(movies):
 
 
 def find_first_movie(movies, target_rating=9.0):
-    """"""
+    """Находит первый фильм в списке, у которого рейтинг выше 9.0."""
     found = None
     i = 0
     while i < len(movies):
@@ -166,6 +166,7 @@ def find_first_movie(movies, target_rating=9.0):
 
 
 def count_long_movies(movies, threshold=120):
+    """Возвращает количество фильмов из списка длиннее 2 часов."""
     count = 0
     for movie in movies:
         if movie["duration_min"] > threshold:
@@ -173,14 +174,34 @@ def count_long_movies(movies, threshold=120):
     return count
 
 
+# ----- Этап 4. Строки
+
+
+def normalize_title(title):
+    """Переводит название фильма к формату Title Case."""
+    words = []
+    for word in title.split():
+        words.append(word[0].upper() + word[1:])
+    return " ".join(words)
+
+
+def make_slug(title):
+    """Превращает название в слаг вида the-quiet-algorithm."""
+    return normalize_title(title).lower().replace(" ", "-")
+
+
+def format_report_line(movie): 
+    """Возвращает строку отчёта с описанием одного фильма."""
+    title = normalize_title(movie["title"])
+    duration = duration_in_hours(movie["duration_min"])
+    genres = ", ".join(sorted(movie["genres"]))
+    return (
+        f'"{title}" ({movie["year"]}) — {movie["rating"]}/10, '
+        f"{duration}, жанры: {genres}"
+    )
+
+
 # ----- Вывод для проверки
 if __name__ == "__main__":
-    print(average_rating(movies))
-    print(catalog_age_stats(movies))
-    print(duration_in_hours(155))
-    print(rating_tier(8.6))
-    print(decade_label(2016))
-    print_non_comedy_titles(movies)
-    find_first_movie(movies)
-    find_first_movie(movies[:7])
-    print(count_long_movies(movies))
+    print(format_report_line(movies[7]))
+    print(make_slug("silent hours"))
