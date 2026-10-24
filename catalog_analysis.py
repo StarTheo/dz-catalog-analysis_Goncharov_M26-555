@@ -90,27 +90,61 @@ movies = [
 
 # --- Функция средней оценки по каталогу
 def average_rating(movies):
-    """Средняя оценка по каталогу, округлённая до одного знака"""
+    """Средняя оценка по каталогу, округлённая до одного знака."""
     sum_mark = 0 
     for movie in movies:
         sum_mark += movie["rating"]
     return round(sum_mark / len(movies), 1)
-                     
+
+# --- Функция, возвращающая старый, новый фильмы и средний 
+# ---               возраст всех фильмов                    
 def catalog_age_stats(movies, current_year=2026):
     """Возвращает кортеж (возраст самого старого, 
-    возраст самого нового, средний возраст)"""
+    возраст самого нового, средний возраст)."""
     ages = [current_year - movie["year"]for movie in movies]
     oldest = max(ages)
     newest = min(ages)
     average = math.ceil(sum(ages) / len(ages))
     return (oldest, newest, average)
 
+# --- Фунция, переводящая минуты в формат ХХч ХХм
 def duration_in_hours(minutes):
+    """Возвращает строкy c переведёнными минутами 
+    в формат 'ЧЧч ММм'."""
     hours = minutes // 60
     minutes_after_hours = minutes % 60
     return f"{hours}ч {minutes_after_hours}м"
 
+
+# ----- Этап 2. Условия и match
+
+# --- Функция возвращает категорию по оценке
+def rating_tier(rating):
+    """Возвращает категорию-отзыв по оценке."""
+    if rating >= 9:
+        return "шедевр"
+    elif rating >= 5:
+        return "хорошо" if rating >= 7 else "средне"
+    elif rating < 5:
+        return "слабо"
+
+# --- Функция возвращает метку возраста фильма
+def decade_label(year):
+    """Возвращает категорию-возраст по году выпуска."""
+    match year:
+        case _ if year > 2020:
+            return "новые"
+        case _ if year >= 2015:
+            return "недавние"
+        case _ if year < 2015:
+            return "старые"
+
+
+# ----- Вывод для проверки
 if __name__ == "__main__":
     print(average_rating(movies))
     print(catalog_age_stats(movies))
-    print(duration_in_hours(155)) 
+    print(duration_in_hours(155))
+    print(rating_tier(8.6))
+    print(decade_label(2016))
+
