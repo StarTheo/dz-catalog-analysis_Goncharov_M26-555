@@ -2,7 +2,7 @@
 
 import math
 
-#Список фильмов с оценками из блока "Исходные данные"
+# Список фильмов с оценками из блока "Исходные данные"
 movies = [
     {
         "title": "The Dune Chronicles",
@@ -88,24 +88,27 @@ movies = [
 
 # ----- Этап 1. Разминка: Переменные, числа, math
 
+
 def average_rating(movies):
     """Средняя оценка по каталогу, округлённая до одного знака."""
-    sum_mark = 0 
+    sum_mark = 0
     for movie in movies:
         sum_mark += movie["rating"]
     return round(sum_mark / len(movies), 1)
-           
+
+
 def catalog_age_stats(movies, current_year=2026):
-    """Возвращает кортеж (возраст самого старого, 
+    """Возвращает кортеж (возраст самого старого,
     возраст самого нового, средний возраст)."""
-    ages = [current_year - movie["year"]for movie in movies]
+    ages = [current_year - movie["year"] for movie in movies]
     oldest = max(ages)
     newest = min(ages)
     average = math.ceil(sum(ages) / len(ages))
     return (oldest, newest, average)
 
+
 def duration_in_hours(minutes):
-    """Возвращает строкy c переведёнными минутами 
+    """Возвращает строкy c переведёнными минутами
     в формат 'ЧЧч ММм'."""
     hours = minutes // 60
     minutes_after_hours = minutes % 60
@@ -113,6 +116,7 @@ def duration_in_hours(minutes):
 
 
 # ----- Этап 2. Условия и match
+
 
 def rating_tier(rating):
     """Возвращает категорию-отзыв по оценке."""
@@ -123,6 +127,7 @@ def rating_tier(rating):
     else:
         return "слабо"
 
+
 def decade_label(year):
     """Возвращает категорию-возраст по году выпуска."""
     match year:
@@ -130,40 +135,42 @@ def decade_label(year):
             return "новые"
         case _ if year >= 2015:
             return "недавние"
-        case _ :
+        case _:
             return "старые"
 
 
 # ----- Этап 3. Циклы
 
-def print_non_comedy_titeles(movies):
+
+def print_non_comedy_titles(movies):
     """Возвращает наименования фильмов, которые не относятся к жанру комедии"""
     for movie in movies:
         if "comedy" in movie["genres"]:
             continue
         print(movie["title"])
 
-def find_first_movie(movies, target_rating = 9.0):
+
+def find_first_movie(movies, target_rating=9.0):
     """"""
-    found = None 
+    found = None
     i = 0
     while i < len(movies):
         if movies[i]["rating"] > target_rating:
             found = movies[i]
-            print(f"Первый шедевр в списке: {found["title"]} ({found["rating"]})")
+            print(f"Первый шедевр в списке: {found['title']} ({found['rating']})")
             break
         i += 1
     else:
         print("Шедевров не найдено")
     return found
 
-def count_long_movies(movies, threshold = 120):
-    count = 0 
+
+def count_long_movies(movies, threshold=120):
+    count = 0
     for movie in movies:
         if movie["duration_min"] > threshold:
-            count += 1 
+            count += 1
     return count
-
 
 
 # ----- Вывод для проверки
@@ -173,9 +180,7 @@ if __name__ == "__main__":
     print(duration_in_hours(155))
     print(rating_tier(8.6))
     print(decade_label(2016))
-    print_non_comedy_titeles(movies)
+    print_non_comedy_titles(movies)
     find_first_movie(movies)
     find_first_movie(movies[:7])
     print(count_long_movies(movies))
-
-
